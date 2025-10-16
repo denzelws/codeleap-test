@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './index.scss'
 
 interface SignupProps {
@@ -6,6 +6,7 @@ interface SignupProps {
 }
 
 const Signup: React.FC<SignupProps> = () => {
+  const [username, setUsername] = useState('')
   return (
     <form className="signup">
       <h2>Welcome to CodeLeap network!</h2>
@@ -17,10 +18,14 @@ const Signup: React.FC<SignupProps> = () => {
           id="username"
           name="username"
           placeholder="John doe"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
       </div>
 
-      <button type="submit">ENTER</button>
+      <button type="submit" disabled={username.length === 0}>
+        ENTER
+      </button>
     </form>
   )
 }

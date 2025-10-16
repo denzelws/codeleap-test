@@ -24,6 +24,8 @@
 
     label {
       margin-bottom: 0.8rem;
+      font-weight: 400;
+      color: $color-text-primary;
     }
 
     input {
@@ -33,7 +35,13 @@
       font-size: 1.4rem;
 
       &::placeholder {
-        color: #cccccc;
+        color: $lightGray;
+      }
+
+      &:focus {
+        outline: none;
+        border-color: $primaryBlue;
+        box-shadow: 0 0 0 0.1rem rgba($primaryBlue, 0.25);
       }
     }
   }
@@ -48,5 +56,9 @@
     padding: 0.6rem 3rem;
     font-weight: 700;
     cursor: pointer;
+
+    &:disabled {
+      background-color: $lightGray;
+    }
   }
 }
