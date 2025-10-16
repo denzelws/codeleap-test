@@ -1,9 +1,9 @@
-import Signup from './components/Signup'
+import AppRouter from './router'
 
 function App() {
   return (
     <>
-      <Signup />
+      <AppRouter />
     </>
   )
 }

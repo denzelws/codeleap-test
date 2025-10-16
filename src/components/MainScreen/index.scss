@@ -1,0 +1,33 @@
+.main-screen {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 50rem;
+  background: $color-background;
+
+  header {
+    display: flex;
+    align-items: center;
+    background: $primaryBlue;
+
+    h1 {
+      margin: 2.7rem;
+      font-size: 1.6rem;
+      color: $color-background;
+    }
+  }
+
+  .content-wrapper {
+    padding: 2.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
+  }
+
+  .post-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem; // Adiciona 24px de espaço vertical entre cada post
+  }
+}

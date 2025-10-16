@@ -1,0 +1,40 @@
+.post-item {
+  border: 0.1rem solid $lightGray;
+  border-radius: 1.6rem;
+
+  header {
+    background-color: $primaryBlue;
+    color: #fff;
+    padding: 2.4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h3 {
+      font-size: 1.6rem;
+      margin: 0;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 2.4rem;
+    }
+  }
+
+  .post-content {
+    padding: 2.4rem;
+
+    .meta-data {
+      display: flex;
+      justify-content: space-between;
+      color: #777;
+      margin-bottom: 1.6rem;
+    }
+
+    p {
+      line-height: 1.5;
+      text-align: justify;
+    }
+  }
+}
