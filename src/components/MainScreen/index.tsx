@@ -1,34 +1,33 @@
 import React from 'react'
-import './index.scss'
+import { useQuery } from '@tanstack/react-query'
+
+import { fetchPosts } from '../../service/api'
 import PostForm from '../PostForm'
-import PostItem from '../PostItem'
+import PostItem, { type PostItemProps } from '../PostItem'
+
+import './index.scss'
 
 interface MainScreenProps {
   children?: React.ReactNode
   currentUser: string
 }
 
-// temp data
-const mockPosts = [
-  {
-    id: 1,
-    title: 'My First Post at CodeLeap Network!',
-    author: 'Victor',
-    timestamp: '25 minutes ago',
-    content:
-      'Curabitur suscipit suscipit tellus. Phasellus consectetuer vestibulum elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas...',
-  },
-  {
-    id: 2,
-    title: 'My Second Post at CodeLeap Network!',
-    author: 'Vini',
-    timestamp: '45 minutes ago',
-    content:
-      'Duis lobortis massa imperdiet quam. Aenean posuere, tortor sed cursus feugiat, nunc augue blandit nunc, eu sollicitudin urna dolor sagittis lacus. Fusce a quam...',
-  },
-]
-
 const MainScreen: React.FC<MainScreenProps> = ({ currentUser }) => {
+  const {
+    data: posts,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ['posts'],
+    queryFn: fetchPosts,
+  })
+
+  const sortedPosts = posts?.sort(
+    (a: PostItemProps, b: PostItemProps) =>
+      new Date(b.created_datetime).getTime() -
+      new Date(a.created_datetime).getTime()
+  )
+
   return (
     <div className="main-screen">
       <header>
@@ -36,14 +35,17 @@ const MainScreen: React.FC<MainScreenProps> = ({ currentUser }) => {
       </header>
 
       <div className="content-wrapper">
-        <PostForm />
+        <PostForm currentUser={currentUser} />
         <section className="post-list">
-          {mockPosts.map((post) => (
+          {isLoading && <p>Loading posts...</p>}
+          {isError && <p>Error fetching posts.</p>}
+          {sortedPosts?.map((post: PostItemProps) => (
             <PostItem
               key={post.id}
+              id={post.id}
               title={post.title}
-              author={post.author}
-              timestamp={post.timestamp}
+              username={post.username}
+              created_datetime={post.created_datetime}
               content={post.content}
               currentUser={currentUser}
             />
