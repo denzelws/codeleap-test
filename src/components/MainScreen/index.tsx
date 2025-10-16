@@ -5,6 +5,7 @@ import PostItem from '../PostItem'
 
 interface MainScreenProps {
   children?: React.ReactNode
+  currentUser: string
 }
 
 // temp data
@@ -27,7 +28,7 @@ const mockPosts = [
   },
 ]
 
-const MainScreen: React.FC<MainScreenProps> = () => {
+const MainScreen: React.FC<MainScreenProps> = ({ currentUser }) => {
   return (
     <div className="main-screen">
       <header>
@@ -44,6 +45,7 @@ const MainScreen: React.FC<MainScreenProps> = () => {
               author={post.author}
               timestamp={post.timestamp}
               content={post.content}
+              currentUser={currentUser}
             />
           ))}
         </section>

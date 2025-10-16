@@ -7,6 +7,7 @@ interface PostItemProps {
   author: string
   timestamp: string
   content: string
+  currentUser: string
 }
 
 const PostItem: React.FC<PostItemProps> = ({
@@ -14,14 +15,19 @@ const PostItem: React.FC<PostItemProps> = ({
   author,
   timestamp,
   content,
+  currentUser,
 }) => {
   return (
     <article className="post-item">
       <header>
         <h3>{title}</h3>
-        <div className="actions">
-          <FaTrash /> <FaEdit />
-        </div>
+
+        {currentUser === author && (
+          <div className="actions">
+            <FaTrash color="white" cursor="pointer" />
+            <FaEdit color="white" cursor="pointer" />
+          </div>
+        )}
       </header>
       <div className="post-content">
         <div className="meta-data">
