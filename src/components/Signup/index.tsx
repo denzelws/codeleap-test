@@ -7,9 +7,21 @@ interface SignupProps {
 
 const Signup: React.FC<SignupProps> = () => {
   return (
-    <div className="signup">
-      <h1>hellow signup</h1>
-    </div>
+    <form className="signup">
+      <h2>Welcome to CodeLeap network!</h2>
+
+      <div className="form-group">
+        <label htmlFor="username">Please enter your username</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          placeholder="John doe"
+        />
+      </div>
+
+      <button type="submit">ENTER</button>
+    </form>
   )
 }
 
