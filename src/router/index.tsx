@@ -14,13 +14,12 @@ const AppRouter = () => {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/login" element={<Signup setUsername={setUsername} />} />
         <Route
           path="/home"
           element={<MainScreen currentUser={username || ''} />}
         />
-        <Route path="/login" element={<Signup setUsername={setUsername} />} />
-
-        <Route path="/" element={<Navigate to="/login" />} />
       </Routes>
     </Router>
   )

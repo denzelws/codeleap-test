@@ -1,5 +1,5 @@
 .post-item {
-  border: 0.1rem solid $lightGray;
+  box-shadow: 0 0 0 0.1rem $lightGray;
   border-radius: 1.6rem;
 
   header {
@@ -9,6 +9,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-radius: 1.6rem 1.6rem 0 0;
 
     h3 {
       font-size: 1.6rem;
