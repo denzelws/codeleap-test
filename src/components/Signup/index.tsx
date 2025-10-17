@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import './index.scss'
 import { useNavigate } from 'react-router-dom'
+import './index.scss'
 
 interface SignupProps {
   children?: React.ReactNode
@@ -15,6 +15,7 @@ const Signup: React.FC<SignupProps> = ({ setUsername }) => {
     e.preventDefault()
     if (inputValue.length > 0) {
       setUsername(inputValue)
+      localStorage.setItem('username', inputValue)
       navigate('/home')
     }
   }

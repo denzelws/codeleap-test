@@ -12,9 +12,10 @@ import EditPostForm from '../EditPostForm'
 interface MainScreenProps {
   children?: React.ReactNode
   currentUser: string
+  onLogout: () => void
 }
 
-const MainScreen: React.FC<MainScreenProps> = ({ currentUser }) => {
+const MainScreen: React.FC<MainScreenProps> = ({ currentUser, onLogout }) => {
   const queryClient = useQueryClient()
   const [postToDeleteId, setPostToDeleteId] = useState<number | null>(null)
   const [postToEdit, setPostToEdit] = useState<PostItemProps | null>(null)
@@ -67,6 +68,9 @@ const MainScreen: React.FC<MainScreenProps> = ({ currentUser }) => {
     <div className="main-screen">
       <header>
         <h1>Codeleap Network</h1>
+        <button className="logout-btn" onClick={onLogout}>
+          Logout
+        </button>
       </header>
 
       <div className="content-wrapper">
