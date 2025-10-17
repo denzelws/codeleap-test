@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { createPost } from '../../service/api'
+import { useCreatePost } from '../../hooks/usePostMutation'
 
 import './index.scss'
 
@@ -11,24 +10,19 @@ type PostFormProps = {
 const PostForm: React.FC<PostFormProps> = ({ currentUser }) => {
   const [fieldTitle, setFieldTitle] = useState('')
   const [fieldContent, setFieldContent] = useState('')
-
-  const queryClient = useQueryClient()
-  const mutation = useMutation({
-    mutationFn: createPost,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['posts'] })
-      setFieldTitle('')
-      setFieldContent('')
-    },
-  })
+  const { mutate: createNewPost, isPending } = useCreatePost()
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    mutation.mutate({
-      username: currentUser,
-      title: fieldTitle,
-      content: fieldContent,
-    })
+    createNewPost(
+      { username: currentUser, title: fieldTitle, content: fieldContent },
+      {
+        onSuccess: () => {
+          setFieldTitle('')
+          setFieldContent('')
+        },
+      }
+    )
   }
 
   return (
@@ -55,13 +49,11 @@ const PostForm: React.FC<PostFormProps> = ({ currentUser }) => {
       </div>
       <button
         disabled={
-          fieldTitle.length === 0 ||
-          fieldContent.length === 0 ||
-          mutation.isPending
+          fieldTitle.length === 0 || fieldContent.length === 0 || isPending
         }
         type="submit"
       >
-        {mutation.isPending ? 'Creating...' : 'Create'}
+        {isPending ? 'Creating...' : 'Create'}
       </button>
     </form>
   )

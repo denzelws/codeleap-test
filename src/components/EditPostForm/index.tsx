@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { updatePost } from '../../service/api'
+import { useUpdatePost } from '../../hooks/usePostMutation'
 import { type PostItemProps } from '../PostItem'
+
 import './index.scss'
 
 interface EditPostFormProps {
@@ -12,19 +12,14 @@ interface EditPostFormProps {
 const EditPostForm: React.FC<EditPostFormProps> = ({ post, onClose }) => {
   const [title, setTitle] = useState(post.title)
   const [content, setContent] = useState(post.content)
-  const queryClient = useQueryClient()
-
-  const mutation = useMutation({
-    mutationFn: updatePost,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['posts'] })
-      onClose()
-    },
-  })
+  const { mutate: updateExistingPost, isPending } = useUpdatePost()
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    mutation.mutate({ postId: post.id, data: { title, content } })
+    updateExistingPost(
+      { postId: post.id, data: { title, content } },
+      { onSuccess: onClose }
+    )
   }
 
   return (
@@ -54,9 +49,9 @@ const EditPostForm: React.FC<EditPostFormProps> = ({ post, onClose }) => {
         <button
           type="submit"
           className="confirm-btn"
-          disabled={!title || !content || mutation.isPending}
+          disabled={!title || !content || isPending}
         >
-          {mutation.isPending ? 'Saving...' : 'Save'}
+          {isPending ? 'Saving...' : 'Save'}
         </button>
       </div>
     </form>
