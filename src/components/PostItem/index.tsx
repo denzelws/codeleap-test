@@ -1,9 +1,8 @@
 import React from 'react'
-import './index.scss'
 import { FaTrash, FaEdit } from 'react-icons/fa'
 import { formatDistanceToNow } from '../../utils/formatDistanceToNow'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { deletePost } from '../../service/api'
+
+import './index.scss'
 
 export type PostItemProps = {
   id: number
@@ -12,6 +11,7 @@ export type PostItemProps = {
   created_datetime: string
   content: string
   currentUser: string
+  onDelete: (id: number) => void
 }
 
 const PostItem: React.FC<PostItemProps> = ({
@@ -21,20 +21,8 @@ const PostItem: React.FC<PostItemProps> = ({
   created_datetime,
   content,
   currentUser,
+  onDelete,
 }) => {
-  const queryClient = useQueryClient()
-  const deleteMutation = useMutation({
-    mutationFn: deletePost,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['posts'] })
-    },
-  })
-
-  const handleDelete = () => {
-    if (window.confirm('Are you sure you want to delete this item?')) {
-      deleteMutation.mutate(id)
-    }
-  }
   return (
     <article className="post-item">
       <header>
@@ -42,7 +30,11 @@ const PostItem: React.FC<PostItemProps> = ({
 
         {currentUser === username && (
           <div className="actions">
-            <FaTrash color="white" cursor="pointer" onClick={handleDelete} />
+            <FaTrash
+              color="white"
+              cursor="pointer"
+              onClick={() => onDelete(id)}
+            />
             <FaEdit color="white" cursor="pointer" />
           </div>
         )}
