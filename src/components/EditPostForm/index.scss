@@ -67,9 +67,9 @@
     }
 
     .confirm-btn {
-      background-color: $primaryBlue;
+      background-color: $green;
       color: #fff;
-      border: 1px solid $primaryBlue;
+      border: 1px solid #999999;
 
       &:disabled {
         border-color: $lightGray;

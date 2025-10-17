@@ -1,6 +1,7 @@
 .post-item {
   box-shadow: 0 0 0 0.1rem $lightGray;
   border-radius: 1.6rem;
+  animation: fadeInUp 0.5s ease-out forwards;
 
   header {
     background-color: $primaryBlue;
@@ -20,6 +21,16 @@
       display: flex;
       align-items: center;
       gap: 2.4rem;
+
+      svg {
+        // Suaviza a transição de qualquer propriedade
+        transition: transform 0.2s ease-in-out;
+
+        &:hover {
+          // Aumenta o tamanho do ícone em 15%
+          transform: scale(1.15);
+        }
+      }
     }
   }
 
