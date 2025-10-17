@@ -1,0 +1,66 @@
+import React, { useState } from 'react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { updatePost } from '../../service/api'
+import { type PostItemProps } from '../PostItem'
+import './index.scss'
+
+interface EditPostFormProps {
+  post: PostItemProps
+  onClose: () => void
+}
+
+const EditPostForm: React.FC<EditPostFormProps> = ({ post, onClose }) => {
+  const [title, setTitle] = useState(post.title)
+  const [content, setContent] = useState(post.content)
+  const queryClient = useQueryClient()
+
+  const mutation = useMutation({
+    mutationFn: updatePost,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['posts'] })
+      onClose()
+    },
+  })
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    mutation.mutate({ postId: post.id, data: { title, content } })
+  }
+
+  return (
+    <form className="edit-post-form" onSubmit={handleSubmit}>
+      <h4>Edit item</h4>
+      <div className="form-group">
+        <label htmlFor="edit-title">Title</label>
+        <input
+          id="edit-title"
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="edit-content">Content</label>
+        <textarea
+          id="edit-content"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+        />
+      </div>
+      <div className="form-actions">
+        <button type="button" className="cancel-btn" onClick={onClose}>
+          Cancel
+        </button>
+        <button
+          type="submit"
+          className="confirm-btn"
+          disabled={!title || !content || mutation.isPending}
+        >
+          {mutation.isPending ? 'Saving...' : 'Save'}
+        </button>
+      </div>
+    </form>
+  )
+}
+
+export default EditPostForm
