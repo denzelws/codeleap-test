@@ -4,33 +4,23 @@ import './index.scss'
 interface ModalProps {
   isOpen: boolean
   onClose: () => void
-  onConfirm: () => void
   children: ReactNode
 }
 
-const Modal: React.FC<ModalProps> = ({
-  isOpen,
-  onClose,
-  onConfirm,
-  children,
-}) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
   if (!isOpen) {
     return null
   }
 
+  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      onClose()
+    }
+  }
+
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
-        {children}
-        <div className="modal-actions">
-          <button className="cancel-btn" onClick={onClose}>
-            Cancel
-          </button>
-          <button className="confirm-btn" onClick={onConfirm}>
-            Delete
-          </button>
-        </div>
-      </div>
+    <div className="modal-overlay" onClick={handleOverlayClick}>
+      <div className="modal-content">{children}</div>
     </div>
   )
 }

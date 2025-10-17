@@ -7,6 +7,7 @@ import PostItem, { type PostItemProps } from '../PostItem'
 import Modal from '../Modal'
 
 import './index.scss'
+import EditPostForm from '../EditPostForm'
 
 interface MainScreenProps {
   children?: React.ReactNode
@@ -16,6 +17,7 @@ interface MainScreenProps {
 const MainScreen: React.FC<MainScreenProps> = ({ currentUser }) => {
   const queryClient = useQueryClient()
   const [postToDeleteId, setPostToDeleteId] = useState<number | null>(null)
+  const [postToEdit, setPostToEdit] = useState<PostItemProps | null>(null)
 
   const {
     data: posts,
@@ -48,6 +50,13 @@ const MainScreen: React.FC<MainScreenProps> = ({ currentUser }) => {
     }
   }
 
+  const handleOpenEditModal = (post: PostItemProps) => {
+    setPostToEdit(post)
+  }
+  const handleCloseEditModal = () => {
+    setPostToEdit(null)
+  }
+
   const sortedPosts = posts?.sort(
     (a: PostItemProps, b: PostItemProps) =>
       new Date(b.created_datetime).getTime() -
@@ -68,24 +77,31 @@ const MainScreen: React.FC<MainScreenProps> = ({ currentUser }) => {
           {sortedPosts?.map((post: PostItemProps) => (
             <PostItem
               key={post.id}
-              id={post.id}
-              title={post.title}
-              username={post.username}
-              created_datetime={post.created_datetime}
-              content={post.content}
+              {...post}
               currentUser={currentUser}
               onDelete={handleOpenDeleteModal}
+              onEdit={handleOpenEditModal}
             />
           ))}
         </section>
       </div>
 
-      <Modal
-        isOpen={postToDeleteId !== null}
-        onClose={handleCloseDeleteModal}
-        onConfirm={handleConfirmDelete}
-      >
+      <Modal isOpen={postToDeleteId !== null} onClose={handleCloseDeleteModal}>
         <h4>Are you sure you want to delete this item?</h4>
+        <div className="modal-actions">
+          <button className="cancel-btn" onClick={handleCloseDeleteModal}>
+            Cancel
+          </button>
+          <button className="confirm-btn" onClick={handleConfirmDelete}>
+            Delete
+          </button>
+        </div>
+      </Modal>
+
+      <Modal isOpen={postToEdit !== null} onClose={handleCloseEditModal}>
+        {postToEdit && (
+          <EditPostForm post={postToEdit} onClose={handleCloseEditModal} />
+        )}
       </Modal>
     </div>
   )

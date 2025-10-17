@@ -12,17 +12,21 @@ export type PostItemProps = {
   content: string
   currentUser: string
   onDelete: (id: number) => void
+  onEdit: (post: PostItemProps) => void
 }
 
-const PostItem: React.FC<PostItemProps> = ({
-  id,
-  title,
-  username,
-  created_datetime,
-  content,
-  currentUser,
-  onDelete,
-}) => {
+const PostItem: React.FC<PostItemProps> = (props) => {
+  const {
+    id,
+    title,
+    username,
+    created_datetime,
+    content,
+    currentUser,
+    onDelete,
+    onEdit,
+  } = props
+
   return (
     <article className="post-item">
       <header>
@@ -35,7 +39,12 @@ const PostItem: React.FC<PostItemProps> = ({
               cursor="pointer"
               onClick={() => onDelete(id)}
             />
-            <FaEdit color="white" cursor="pointer" />
+
+            <FaEdit
+              color="white"
+              cursor="pointer"
+              onClick={() => onEdit(props)}
+            />
           </div>
         )}
       </header>
